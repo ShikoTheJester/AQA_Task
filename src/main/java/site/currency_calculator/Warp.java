@@ -5,8 +5,10 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.actions;
@@ -68,6 +70,14 @@ public class Warp {
             }
         }
         return list;
+    }
+
+    public static Map<Integer, List<Double>> dataSaver(Map<Integer, List<Double>> map) {
+        return map;
+    }
+
+    public static List<Double> dataReturner (Map<Integer, List<Double>> map, Integer index){
+        return map.get(index);
     }
 }
 

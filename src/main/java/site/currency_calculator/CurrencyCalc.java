@@ -1,5 +1,6 @@
 package site.currency_calculator;
 
+import com.codeborne.selenide.ex.ElementNotFound;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -17,7 +18,12 @@ public class CurrencyCalc {
     @Step
     public void checkSeeRatesButton() {
         moveAndClick(el.getSeeRatesButton());
-        el.getLazyLoaderImage().shouldHave(attribute("class", "text-center ng-hide"));
+        try {
+            el.getLazyLoaderImage().shouldHave(attribute("class", "text-center ng-hide"));
+        } catch (ElementNotFound e) {
+            refresh();
+            el.getLazyLoaderImage().shouldHave(attribute("class", "text-center ng-hide"));
+        }
     }
 
     @Step
@@ -38,15 +44,15 @@ public class CurrencyCalc {
 
     @Step
     public void checkCountrySelections() {
+        int q = 0;
         Map<Integer, List<Double>> collectForPrevious = new HashMap<>();
         Map<Integer, List<Double>> collections = new HashMap<>();
-        int q = 0;
-        if (q > 0) {
-            Assert.assertNotEquals(collectForPrevious.get(0), collections.get(0));
-            Assert.assertNotEquals(collectForPrevious.get(1), collections.get(1));
-            Assert.assertNotEquals(collectForPrevious.get(2), collections.get(2));
-        }
         for (CurrencyCalcElements.FooterCountries dir : CurrencyCalcElements.FooterCountries.values()) {
+            if (q > 1) {
+                Assert.assertNotEquals(dataReturner(collectForPrevious,0), collections.get(0));
+                Assert.assertNotEquals(dataReturner(collectForPrevious,1), collections.get(1));
+                Assert.assertNotEquals(dataReturner(collectForPrevious,2), collections.get(2));
+            }
             checkSeeRatesButton();
             moveAndClick(el.getLangFooterButton());
             moveAndClick(el.getLangChangeButton());
@@ -58,8 +64,8 @@ public class CurrencyCalc {
                 List<Double> list = new ArrayList<>();
                 parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), list, x);
                 collections.put(x, list);
-                if (q > 0) {
-                    collectForPrevious.put(x, list);
+                if (q > 1) {
+                    dataSaver(collectForPrevious);
                 }
             }
             Assert.assertNotEquals(collections.get(0), collections.get(1));
