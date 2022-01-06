@@ -3,6 +3,7 @@ package site.currency_calculator;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
@@ -37,6 +38,14 @@ public class CurrencyCalc {
 
     @Step
     public void checkCountrySelections() {
+        Map<Integer, List<Double>> collectForPrevious = new HashMap<>();
+        Map<Integer, List<Double>> collections = new HashMap<>();
+        int q = 0;
+        if (q > 0) {
+            Assert.assertNotEquals(collectForPrevious.get(0), collections.get(0));
+            Assert.assertNotEquals(collectForPrevious.get(1), collections.get(1));
+            Assert.assertNotEquals(collectForPrevious.get(2), collections.get(2));
+        }
         for (CurrencyCalcElements.FooterCountries dir : CurrencyCalcElements.FooterCountries.values()) {
             checkSeeRatesButton();
             moveAndClick(el.getLangFooterButton());
@@ -45,14 +54,17 @@ public class CurrencyCalc {
             checkSeeRatesButton();
             Assert.assertEquals(el.getCurrencyName().getText(), dir.getCurrency());
 
-            Map<Integer, List<Double>> collections = new HashMap<>();
             for (int x = 0; x < 3; x++) {
                 List<Double> list = new ArrayList<>();
                 parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), list, x);
                 collections.put(x, list);
+                if (q > 0) {
+                    collectForPrevious.put(x, list);
+                }
             }
             Assert.assertNotEquals(collections.get(0), collections.get(1));
             Assert.assertNotEquals(collections.get(1), collections.get(2));
+            q++;
         }
     }
 
