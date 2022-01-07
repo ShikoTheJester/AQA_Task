@@ -5,6 +5,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
+import java.io.IOException;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
@@ -44,15 +45,11 @@ public class CurrencyCalc {
 
     @Step
     public void checkCountrySelections() {
-        int q = 0;
-        Map<Integer, List<Double>> collectForPrevious = new HashMap<>();
+        int counter = 0;
+        int index = -1;
+        Map<Integer, Map<Integer, List<Double>>> collectForPrevious = new HashMap<>();
         Map<Integer, List<Double>> collections = new HashMap<>();
         for (CurrencyCalcElements.FooterCountries dir : CurrencyCalcElements.FooterCountries.values()) {
-            if (q > 1) {
-                Assert.assertNotEquals(dataReturner(collectForPrevious,0), collections.get(0));
-                Assert.assertNotEquals(dataReturner(collectForPrevious,1), collections.get(1));
-                Assert.assertNotEquals(dataReturner(collectForPrevious,2), collections.get(2));
-            }
             checkSeeRatesButton();
             moveAndClick(el.getLangFooterButton());
             moveAndClick(el.getLangChangeButton());
@@ -60,17 +57,19 @@ public class CurrencyCalc {
             checkSeeRatesButton();
             Assert.assertEquals(el.getCurrencyName().getText(), dir.getCurrency());
 
-            for (int x = 0; x < 3; x++) {
+            for (int x = 0; x < 31; x++) {
                 List<Double> list = new ArrayList<>();
                 parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), list, x);
                 collections.put(x, list);
-                if (q > 1) {
-                    dataSaver(collectForPrevious);
-                }
             }
-            Assert.assertNotEquals(collections.get(0), collections.get(1));
-            Assert.assertNotEquals(collections.get(1), collections.get(2));
-            q++;
+            collectForPrevious.put(counter, collections);
+
+            if (counter > 0) {
+                Assert.assertNotEquals(collectForPrevious.get(index),
+                        collectForPrevious.get(counter));
+            }
+            counter++;
+            index++;
         }
     }
 
