@@ -14,7 +14,4 @@ public interface CurrencyCalcLocators {
     By LANG_LIST = By.cssSelector("ul.dropdown-menu[aria-labelledby=countries-dropdown]>li");
     By CURRENCY_NAME = By.xpath("//span[contains(@class, 'ui-select-match-text pull-left')]/span");
     By TABLE_RATES_LIST = By.xpath("//tr[@class='ng-scope']");
-
-
-
 }

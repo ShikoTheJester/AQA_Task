@@ -5,7 +5,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
-import java.io.IOException;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
@@ -46,7 +45,6 @@ public class CurrencyCalc {
     @Step
     public void checkCountrySelections() {
         int counter = 0;
-        int index = -1;
         Map<Integer, Map<Integer, List<Double>>> collectForPrevious = new HashMap<>();
         Map<Integer, List<Double>> collections = new HashMap<>();
         for (CurrencyCalcElements.FooterCountries dir : CurrencyCalcElements.FooterCountries.values()) {
@@ -65,11 +63,11 @@ public class CurrencyCalc {
             collectForPrevious.put(counter, collections);
 
             if (counter > 0) {
-                Assert.assertNotEquals(collectForPrevious.get(index),
+                int prevIndex = counter - 1;
+                Assert.assertNotEquals(collectForPrevious.get(prevIndex),
                         collectForPrevious.get(counter));
             }
             counter++;
-            index++;
         }
     }
 

@@ -54,8 +54,7 @@ public class Warp {
     }
 
     public static List<Double> parsePropOuterText(ElementsCollection collection, String script, List<Double> list, int x) {
-        String outerText = extractDOMProperties(collection.get(x),
-                script);
+        String outerText = extractDOMProperties(collection.get(x), script);
         String[] valuesOfString = outerText
                 .replaceAll("\\(", "")
                 .replaceAll("\\)", "")
