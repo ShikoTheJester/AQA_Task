@@ -69,5 +69,11 @@ public class Warp {
         }
         return list;
     }
+
+    public static void forceClick(SelenideElement e) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", e.shouldBe(enabled));
+        executor.executeScript("arguments[0].scrollIntoView();", e);
+    }
 }
 

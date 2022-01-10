@@ -3,6 +3,7 @@ package site.currency_calculator;
 import com.codeborne.selenide.ex.ElementNotFound;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.testng.Assert;
 
 import java.util.*;
@@ -23,6 +24,9 @@ public class CurrencyCalc {
         } catch (ElementNotFound e) {
             refresh();
             el.getLazyLoaderImage().shouldHave(attribute("class", "text-center ng-hide"));
+        }
+        catch (ElementNotInteractableException ex){
+            forceClick(el.getSeeRatesButton());
         }
     }
 
@@ -46,7 +50,8 @@ public class CurrencyCalc {
     public void checkCountrySelections() {
         int counter = 0;
         Map<Integer, Map<Integer, List<Double>>> collectForPrevious = new HashMap<>();
-        Map<Integer, List<Double>> collections = new HashMap<>();
+        HashMap<Integer, List<Double>> collections = new HashMap<>();
+        Map<Integer, List<Double>> copyOfCollections;
         for (CurrencyCalcElements.FooterCountries dir : CurrencyCalcElements.FooterCountries.values()) {
             checkSeeRatesButton();
             moveAndClick(el.getLangFooterButton());
@@ -55,12 +60,13 @@ public class CurrencyCalc {
             checkSeeRatesButton();
             Assert.assertEquals(el.getCurrencyName().getText(), dir.getCurrency());
 
-            for (int x = 0; x < 31; x++) {
+            for (int x = 0; x < 3; x++) {
                 List<Double> list = new ArrayList<>();
                 parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), list, x);
                 collections.put(x, list);
             }
-            collectForPrevious.put(counter, collections);
+            copyOfCollections = (Map<Integer, List<Double>>) collections.clone();
+            collectForPrevious.put(counter, copyOfCollections);
 
             if (counter > 0) {
                 int prevIndex = counter - 1;
