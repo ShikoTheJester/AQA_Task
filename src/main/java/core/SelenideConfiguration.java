@@ -18,6 +18,11 @@ public class SelenideConfiguration {
         doAll();
     }
 
+    public static void configure() {
+        Configuration.startMaximized = true;
+        doAll();
+    }
+
     private static void doAll() {
         doBasic();
         doRemote();

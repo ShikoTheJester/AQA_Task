@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class PropertiesReader {private static Properties properties = null;
-    private static final String configFilePath = "src/main/resources/application.properties";
+    private static final String configFilePath = "src/test/resources/application.properties";
 
     private static Properties readPropertiesFromFile() {
         Properties properties = null;

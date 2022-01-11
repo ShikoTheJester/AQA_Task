@@ -1,8 +1,10 @@
-package site.currency_calculator;
+package pages.currency_calculator;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.ex.ElementNotFound;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
@@ -12,12 +14,17 @@ import java.util.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.actions;
 
-public class Warp {
+public class Utility {
 
     private static WebDriver driver;
+    private static JavascriptExecutor executor;
 
     public static void moveAndClick(SelenideElement el) {
-        actions().moveToElement(el.waitUntil(enabled, 10000, 1000)).click().perform();
+        try {
+            actions().moveToElement(el.waitUntil(enabled, 10000, 1000)).click().perform();
+        } catch (ElementNotInteractableException | ElementNotFound e) {
+            forceClick(el.shouldBe(enabled));
+        }
     }
 
     public static void scrollToElement(SelenideElement el) {
@@ -30,9 +37,8 @@ public class Warp {
 
     public static String extractDOMProperties(SelenideElement el, String script) {
         driver = WebDriverRunner.getWebDriver();
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        return (String) executor.executeScript(script,
-                el.shouldBe(visible));
+        executor = (JavascriptExecutor) driver;
+        return (String) executor.executeScript(script, el.shouldBe(visible));
     }
 
     public static int stringToIntWrapper(String s) {
@@ -71,9 +77,8 @@ public class Warp {
     }
 
     public static void forceClick(SelenideElement e) {
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", e.shouldBe(enabled));
-        executor.executeScript("arguments[0].scrollIntoView();", e);
     }
 }
 

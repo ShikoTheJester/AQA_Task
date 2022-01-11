@@ -1,7 +1,7 @@
-package core;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import core.Navigation;
+import core.SelenideConfiguration;
 import core.enums.Country;
 import core.enums.Pages;
 import core.enums.Resolution;
