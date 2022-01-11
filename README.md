@@ -6,3 +6,4 @@ Logic of test located at class "CurrencyCalc";
 Repeated mehtods taken to class "Warp";
 Driver configuration located at "core" package;
 Other classes at core package discribe shorrtly describe framework with the expectation of expansion;
+ 
