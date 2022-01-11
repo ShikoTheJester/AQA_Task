@@ -5,4 +5,4 @@ For generate report use "mvn allure:serve" (allure-command line must be installe
 Logic of test located at class "CurrencyCalc";<br/>
 Repeated methods taken to class "Warp";<br/>
 Driver configuration located at "core" package;<br/>
-Other classes at core package describe shortly describe framework with the expectation of expansion;<br/>
+Other classes at core package describe shortly framework with the expectation of expansion;<br/>
