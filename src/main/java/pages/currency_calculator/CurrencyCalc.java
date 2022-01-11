@@ -3,8 +3,6 @@ package pages.currency_calculator;
 import com.codeborne.selenide.ex.ElementNotFound;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
@@ -90,26 +88,26 @@ public class CurrencyCalc {
         moveAndClick($(By.xpath(el.getForDynamicLangElements() + "\""
                 + FooterCountries.Lithuania.getCountry() + "\"" + ")]")));
         clickSeeRatesButton();
-        List<Double> list = new ArrayList<>();
+        List<Double> rowAmounts = new ArrayList<>();
         Map<Integer, List<Double>> mapForAssert = new HashMap<>();
         for (int x = 0; x < 10; x++) {
-            parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), list, x);
-            if (list.size() < 11) {
-                for (int q = list.size(); q < 11; q++) {
+            parsePropOuterText(el.getTableRatesList(), el.getOuterTextScript(), rowAmounts, x);
+            if (rowAmounts.size() < 11) {
+                for (int q = rowAmounts.size(); q < 11; q++) {
                     try {
-                        if (list.get(4) == 0) {
-                            list.add(5, 0.00);
-                        } else if (list.get(8) == 0) {
-                            list.add(8, 0.00);
-                        } else if (list.get(10) == 0) {
-                            list.add(10, 0.00);
+                        if (rowAmounts.get(4) == 0) {
+                            rowAmounts.add(5, 0.00);
+                        } else if (rowAmounts.get(8) == 0) {
+                            rowAmounts.add(8, 0.00);
+                        } else if (rowAmounts.get(10) == 0) {
+                            rowAmounts.add(10, 0.00);
                         }
                     } catch (IndexOutOfBoundsException e) {
-                        list.add(0.00);
+                        rowAmounts.add(0.00);
                     }
                 }
             }
-            mapForAssert.put(x,list);
+            mapForAssert.put(x, rowAmounts);
         }
         return mapForAssert;
     }

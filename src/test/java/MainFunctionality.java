@@ -76,9 +76,9 @@ public class MainFunctionality extends BaseTest {
     @Attachment(type = "image/png")
     @Test
     public void testLowerRates() {
-        Map<Integer, List<Double>> map = calc.collectRatesRowsAmounts();
+        Map<Integer, List<Double>> mapForAssert = calc.collectRatesRowsAmounts();
         for (int x = 0; x < 10; x++) {
-            List<Double> list = map.get(x);
+            List<Double> list = mapForAssert.get(x);
             double amountPaysera = list.get(3);
             double amountSwedbank = list.get(4);
             double amountCitadele = list.get(7);
